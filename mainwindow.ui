@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1500</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>cxbs</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QGraphicsView" name="ui_gv"/>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>信息</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>701</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>数量</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>21</x>
+           <y>30</y>
+           <width>102</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>高压柜</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBox"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>低压柜</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBox_2"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>变压器</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBox_3"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>高压柜</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>低压柜</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1500</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>设置方案</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="action_pin"/>
+    <addaction name="action_mu"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>变压器</string>
+    </property>
+    <addaction name="actionS11_30"/>
+    <addaction name="actionS11_50"/>
+    <addaction name="actionS11_63"/>
+    <addaction name="actionS11_80"/>
+    <addaction name="actionS11_100"/>
+    <addaction name="actionS11_125"/>
+    <addaction name="actionS11_160"/>
+    <addaction name="actionS11_200"/>
+    <addaction name="actionS11_250"/>
+    <addaction name="actionS11_315"/>
+    <addaction name="actionS11_400"/>
+    <addaction name="actionS11_500"/>
+    <addaction name="actionS11_630"/>
+    <addaction name="actionS11_800"/>
+    <addaction name="actionS11_1000"/>
+    <addaction name="actionS11_1250"/>
+    <addaction name="actionS11_1600"/>
+    <addaction name="actionS11_2000"/>
+    <addaction name="actionS11_2500"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>绘制</string>
+    </property>
+    <addaction name="action_caohuimenu"/>
+    <addaction name="separator"/>
+    <addaction name="actionborder"/>
+    <addaction name="separator"/>
+    <addaction name="action"/>
+    <addaction name="action90"/>
+    <addaction name="action90_2"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_5"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextOnly</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionsMuZiXing"/>
+   <addaction name="separator"/>
+   <addaction name="actionPinZiXing"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>true</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionDrawGrid"/>
+  </widget>
+  <action name="action_pin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>品字型</string>
+   </property>
+   <property name="toolTip">
+    <string>品字型</string>
+   </property>
+  </action>
+  <action name="action_mu">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>目字型</string>
+   </property>
+  </action>
+  <action name="actionS11_30">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-30</string>
+   </property>
+  </action>
+  <action name="actionS11_50">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-50</string>
+   </property>
+  </action>
+  <action name="actionS11_63">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-63</string>
+   </property>
+  </action>
+  <action name="actionS11_80">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-80</string>
+   </property>
+  </action>
+  <action name="actionS11_100">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-100</string>
+   </property>
+  </action>
+  <action name="actionS11_125">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-125</string>
+   </property>
+  </action>
+  <action name="actionS11_160">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-160</string>
+   </property>
+  </action>
+  <action name="actionS11_200">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-200</string>
+   </property>
+  </action>
+  <action name="actionS11_250">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-250</string>
+   </property>
+  </action>
+  <action name="actionS11_315">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-315</string>
+   </property>
+  </action>
+  <action name="actionS11_400">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-400</string>
+   </property>
+  </action>
+  <action name="actionS11_500">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-500</string>
+   </property>
+  </action>
+  <action name="actionS11_630">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-630</string>
+   </property>
+  </action>
+  <action name="actionS11_800">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-800</string>
+   </property>
+  </action>
+  <action name="actionS11_1000">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-1000</string>
+   </property>
+  </action>
+  <action name="actionS11_1250">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-1250</string>
+   </property>
+  </action>
+  <action name="actionS11_1600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-1600</string>
+   </property>
+  </action>
+  <action name="actionS11_2000">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-2000</string>
+   </property>
+  </action>
+  <action name="actionS11_2500">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>S11-2500</string>
+   </property>
+  </action>
+  <action name="action_caohuimenu">
+   <property name="text">
+    <string>草绘</string>
+   </property>
+  </action>
+  <action name="actionsMuZiXing">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/imgs/imgs/chinese_new_year_128px_1224284_easyicon.net.ico</normaloff>:/imgs/imgs/chinese_new_year_128px_1224284_easyicon.net.ico</iconset>
+   </property>
+   <property name="text">
+    <string>目字型</string>
+   </property>
+   <property name="toolTip">
+    <string>目字型</string>
+   </property>
+  </action>
+  <action name="actionDrawGrid">
+   <property name="icon">
+    <iconset resource="asset.qrc">
+     <normaloff>:/imgs/imgs/mao.png</normaloff>:/imgs/imgs/mao.png</iconset>
+   </property>
+   <property name="text">
+    <string>DrawGrid</string>
+   </property>
+   <property name="toolTip">
+    <string>draw grid</string>
+   </property>
+  </action>
+  <action name="actionborder">
+   <property name="text">
+    <string>边框</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>缩放</string>
+   </property>
+  </action>
+  <action name="action90">
+   <property name="text">
+    <string>90 -</string>
+   </property>
+  </action>
+  <action name="action90_2">
+   <property name="text">
+    <string>90 +</string>
+   </property>
+  </action>
+  <action name="actionPinZiXing">
+   <property name="text">
+    <string>品字型</string>
+   </property>
+   <property name="toolTip">
+    <string>品字型</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="asset.qrc"/>
+ </resources>
+ <connections/>
+</ui>
