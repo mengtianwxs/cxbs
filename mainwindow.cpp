@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QInputDialog>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,9 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     method_initData();
 
     view=ui->ui_gv;
-    scene=new QGraphicsScene(this);
+    scene=new QGraphicsScene(QRectF(0,0,990,790));
     view->setScene(scene);
     view->setFixedSize(1000,800);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 //    gti=new QGraphicsTextItem();
 //    gti->setPlainText("this is mengtianwxs");
 //    scene->addItem(gti);
@@ -27,6 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
       p=new mtp(scene);
 
       ui->actionPinZiXing->setEnabled(false);
+
+      connect(view,SIGNAL(mouseMovePoint(QPointF)),this,SLOT(method_onViewMouseMove(QPointF)));
+      connect(view,SIGNAL(mousePressEvent(QPointF)),this,SLOT(method_onViewClick(QPointF)));
+      view->setMouseTracking(true);
+      view->setDragMode(QGraphicsView::ScrollHandDrag);
+      view->setCursor(Qt::CrossCursor);
+
+
 
 
 }
@@ -231,3 +244,33 @@ void MainWindow::on_actionborder_triggered()
     p->drawBorder(this->view->width()/2-200,this->view->height()/2-150,400,300);
 }
 
+
+void MainWindow::on_actionword_triggered()
+{
+    QString content=QInputDialog::getText(this,"请输入文字","");
+   qDebug()<<content;
+   if(content!=""){
+       QGraphicsTextItem * ti=new QGraphicsTextItem();
+       ti->setPlainText(content);
+       ti->setPos(QPoint(500,400));
+       ti->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+
+       scene->addItem(ti);
+       scene->clearSelection();
+   }
+
+
+}
+
+void MainWindow::method_onViewMouseMove(QPointF p)
+{
+
+    qDebug()<<QString::number(p.x());
+}
+
+void MainWindow::method_onViewClick(QPoint p)
+{
+
+
+
+}
