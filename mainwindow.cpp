@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "mttextitem.h"
 #include "ui_mainwindow.h"
 
 #include <QInputDialog>
@@ -20,24 +21,19 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-//    gti=new QGraphicsTextItem();
-//    gti->setPlainText("this is mengtianwxs");
-//    scene->addItem(gti);
-
-//    QGraphicsRectItem* rec=new QGraphicsRectItem(0,0,100,100);
-//    scene->addItem(rec);
-//    QTransform tran;
-//    qDebug()<<scene->itemAt(50,50,tran)<<"pp";
-//    qDebug()<<rec->scenePos()<<rec->sceneBoundingRect();
       p=new mtp(scene);
 
       ui->actionPinZiXing->setEnabled(false);
 
-      connect(view,SIGNAL(mouseMovePoint(QPointF)),this,SLOT(method_onViewMouseMove(QPointF)));
-      connect(view,SIGNAL(mousePressEvent(QPointF)),this,SLOT(method_onViewClick(QPointF)));
+      connect(view,SIGNAL(mouseMovePoint(QPoint)),this,SLOT(method_onViewMouseMove(QPoint)));
+      connect(view,SIGNAL(mousePressPoint(QPoint)),this,SLOT(method_onViewClick(QPoint)));
+      connect(view,SIGNAL(mouseDragPoint(QPoint)),this,SLOT(method_onDragMouseMove(QPoint)));
+
       view->setMouseTracking(true);
       view->setDragMode(QGraphicsView::ScrollHandDrag);
       view->setCursor(Qt::CrossCursor);
+      view->setAcceptDrops(true);
+
 
 
 
@@ -248,29 +244,89 @@ void MainWindow::on_actionborder_triggered()
 void MainWindow::on_actionword_triggered()
 {
     QString content=QInputDialog::getText(this,"请输入文字","");
-   qDebug()<<content;
    if(content!=""){
-       QGraphicsTextItem * ti=new QGraphicsTextItem();
+//       QGraphicsTextItem * ti=new QGraphicsTextItem();
+       mttextitem *ti=new mttextitem();
        ti->setPlainText(content);
        ti->setPos(QPoint(500,400));
        ti->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+       ti->setAcceptDrops(true);
 
        scene->addItem(ti);
        scene->clearSelection();
+
+       connect(ti,SIGNAL(dragMovePoint(QPointF)),this,SLOT(method_ontextdragMove(QPointF)));
+       qDebug()<<"connect text";
+
    }
 
 
 }
 
-void MainWindow::method_onViewMouseMove(QPointF p)
+void MainWindow::method_onViewMouseMove(QPoint pv)
 {
+//    QPointF obj_point=view->mapToScene(pv);
+//    QGraphicsItem* item=scene->itemAt(obj_point,view->transform());
 
-    qDebug()<<QString::number(p.x());
+//    if(item !=NULL ){
+
+//        QPointF item_point=item->mapFromScene(obj_point);
+
+//        qDebug()<<"itemx "<<item_point.x()<<"itemy "<<item_point.y();
+//    }
 }
 
-void MainWindow::method_onViewClick(QPoint p)
+void MainWindow::method_onViewClick(QPoint pv)
 {
 
+//    qDebug()<<"onviewclick";
+
+//    QPointF obj_point=view->mapToScene(pv);
+//    QGraphicsItem* item=scene->itemAt(obj_point,view->transform());
+
+//    if(item !=NULL ){
+
+//        QPointF item_point=item->mapFromScene(obj_point);
+
+//        qDebug()<<"itemx "<<item_point.x()<<"itemy "<<item_point.y();
+//    }
 
 
+}
+
+
+
+void MainWindow::on_actionDeleteItem_triggered()
+{
+    int num=scene->selectedItems().count();
+    if(num>0){
+        QGraphicsItem *item=scene->selectedItems().at(0);
+        scene->removeItem(item);
+    }
+
+}
+
+void MainWindow::method_onDragMouseMove(QPoint pv)
+{
+    qDebug()<<"drag";
+    QPointF obj_point=view->mapToScene(pv);
+    QGraphicsItem* item=scene->itemAt(obj_point,view->transform());
+    int num=scene->selectedItems().count();
+
+    if(item!=NULL && num>1){
+
+        qDebug()<<"item"<<item->x()<<" : "<<item->y();
+    }
+}
+
+void MainWindow::method_ontextdragMove(QPointF pf)
+{
+    qDebug()<<"drag";
+    QGraphicsItem* item=scene->itemAt(pf,view->transform());
+    int num=scene->selectedItems().count();
+
+    if(item!=NULL && num>1){
+
+        qDebug()<<"item"<<item->x()<<" : "<<item->y();
+    }
 }

@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         mtp.cpp \
-        qmtscene.cpp
+    mttextitem.cpp \
+    mtview.cpp
 
 HEADERS += \
         mainwindow.h \
         mtp.h \
-        qmtscene.h
+    mttextitem.h \
+    mtview.h
 
 FORMS += \
         mainwindow.ui

@@ -21,28 +21,28 @@ void mtp::drawGrid()
 {
 
     QPen pen;
-    pen.setWidth(2);
+    pen.setWidth(3);
     pen.setColor(Qt::red);
 
 
-    int seg=10;
-    int b=80;
+    int seg=20;
+    int b=39;
     //hang
     for(int n=1;n<b+1;n++){
 
-            QGraphicsLineItem* item = new QGraphicsLineItem(seg,seg*n,(b+4)*seg,seg*n);
+            QGraphicsLineItem* item = new QGraphicsLineItem(seg,seg*n,(b+9)*seg,seg*n);
             item->setPen(pen);
-            item->setOpacity(0.2);
+            item->setOpacity(0.5);
             scene->addItem(item);
             list_gird.append(item);
 
     }
     //shu
-    for(int n=1;n<b+5;n++){
+    for(int n=1;n<b+10;n++){
 
             QGraphicsLineItem* item = new QGraphicsLineItem(seg*n,seg,seg*n,seg*b);
             scene->addItem(item);
-            item->setOpacity(0.2);
+            item->setOpacity(0.5);
             list_gird.append(item);
     }
 

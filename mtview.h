@@ -13,10 +13,13 @@ public:
     mtview(QWidget* parent);
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
+    void drawMoveEvent(QDragMoveEvent* event);
+
 
 signals:
-    void mouseMovePoint(QPointF p);
-    void mousePressPoint(QPointF p);
+    void mouseMovePoint(QPoint p);
+    void mousePressPoint(QPoint p);
+    void mouseDragPoint(QPoint p);
 };
 
 #endif // MTVIEW_H

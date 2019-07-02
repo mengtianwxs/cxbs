@@ -44,6 +44,9 @@ public:
     void method_displayGrid();
     void method_deleteGrid();
 
+
+
+
 private slots:
     void on_action_pin_triggered();
     void on_action_mu_triggered();
@@ -67,6 +70,14 @@ private slots:
     void on_actionDrawGrid_triggered();
     void on_action_triggered();
     void on_actionborder_triggered();
+
+    void method_onViewMouseMove(QPoint pv);
+    void method_onViewClick(QPoint pv);
+    void on_actionword_triggered();
+    void on_actionDeleteItem_triggered();
+    void method_onDragMouseMove(QPoint pv);
+
+    void method_ontextdragMove(QPointF pf);
 };
 
 #endif // MAINWINDOW_H
