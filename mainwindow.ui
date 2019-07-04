@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
+    <width>1100</width>
     <height>800</height>
    </rect>
   </property>
@@ -21,88 +21,147 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>信息</string>
        </attribute>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QToolBox" name="toolBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>150</y>
+          <width>230</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>230</width>
+           <height>169</height>
+          </rect>
+         </property>
+         <attribute name="label">
+          <string>设置</string>
+         </attribute>
+         <widget class="QCheckBox" name="cb_shu">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>10</y>
+            <width>29</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>|</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="cb_heng">
+          <property name="geometry">
+           <rect>
+            <x>55</x>
+            <y>10</y>
+            <width>29</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>1</x>
+            <y>10</y>
+            <width>48</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>优先级别</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>230</width>
+           <height>169</height>
+          </rect>
+         </property>
+         <attribute name="label">
+          <string>柜体</string>
+         </attribute>
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>181</width>
+            <height>131</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>宽度</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="placeholderText">
+              <string>width</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>长度</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEdit_2">
+             <property name="placeholderText">
+              <string>deep</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>添加</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QTextEdit" name="textEdit">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>701</width>
-          <height>141</height>
+          <width>221</width>
+          <height>131</height>
          </rect>
         </property>
-        <property name="title">
-         <string>数量</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-        <property name="checkable">
-         <bool>false</bool>
-        </property>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>30</y>
-           <width>102</width>
-           <height>101</height>
-          </rect>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>高压柜</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBox"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>低压柜</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBox_2"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>变压器</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBox_3"/>
-          </item>
-         </layout>
-        </widget>
        </widget>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>高压柜</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>低压柜</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>Page</string>
-       </attribute>
       </widget>
      </widget>
     </item>
@@ -113,18 +172,10 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1500</width>
-     <height>25</height>
+     <width>1100</width>
+     <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>设置方案</string>
-    </property>
-    <addaction name="separator"/>
-    <addaction name="action_pin"/>
-    <addaction name="action_mu"/>
-   </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>变压器</string>
@@ -149,21 +200,15 @@
     <addaction name="actionS11_2000"/>
     <addaction name="actionS11_2500"/>
    </widget>
-   <widget class="QMenu" name="menu_5">
+   <widget class="QMenu" name="menu_3">
     <property name="title">
-     <string>绘制</string>
+     <string>柜体</string>
     </property>
-    <addaction name="action_caohuimenu"/>
-    <addaction name="separator"/>
-    <addaction name="actionborder"/>
-    <addaction name="separator"/>
-    <addaction name="action"/>
-    <addaction name="action90"/>
-    <addaction name="action90_2"/>
+    <addaction name="action750_900"/>
+    <addaction name="action900_1000"/>
    </widget>
-   <addaction name="menu"/>
    <addaction name="menu_2"/>
-   <addaction name="menu_5"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="toolButtonStyle">
@@ -175,13 +220,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionsMuZiXing"/>
-   <addaction name="separator"/>
-   <addaction name="actionPinZiXing"/>
-   <addaction name="separator"/>
    <addaction name="actionXiFuGrid"/>
    <addaction name="separator"/>
    <addaction name="actionDeleteItem"/>
+   <addaction name="separator"/>
+   <addaction name="action_jiegou"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -199,26 +242,9 @@
    </attribute>
    <addaction name="actionDrawGrid"/>
    <addaction name="actionword"/>
+   <addaction name="actionbianyaqi"/>
+   <addaction name="actionguiti"/>
   </widget>
-  <action name="action_pin">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>品字型</string>
-   </property>
-   <property name="toolTip">
-    <string>品字型</string>
-   </property>
-  </action>
-  <action name="action_mu">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>目字型</string>
-   </property>
-  </action>
   <action name="actionS11_30">
    <property name="checkable">
     <bool>true</bool>
@@ -371,21 +397,12 @@
     <string>S11-2500</string>
    </property>
   </action>
-  <action name="action_caohuimenu">
+  <action name="action_jiegou">
    <property name="text">
-    <string>草绘</string>
-   </property>
-  </action>
-  <action name="actionsMuZiXing">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/imgs/imgs/chinese_new_year_128px_1224284_easyicon.net.ico</normaloff>:/imgs/imgs/chinese_new_year_128px_1224284_easyicon.net.ico</iconset>
-   </property>
-   <property name="text">
-    <string>目字型</string>
+    <string>结构</string>
    </property>
    <property name="toolTip">
-    <string>目字型</string>
+    <string>结构</string>
    </property>
   </action>
   <action name="actionDrawGrid">
@@ -400,39 +417,11 @@
     <string>网格</string>
    </property>
   </action>
-  <action name="actionborder">
-   <property name="text">
-    <string>边框</string>
-   </property>
-  </action>
-  <action name="action">
-   <property name="text">
-    <string>缩放</string>
-   </property>
-  </action>
-  <action name="action90">
-   <property name="text">
-    <string>90 -</string>
-   </property>
-  </action>
-  <action name="action90_2">
-   <property name="text">
-    <string>90 +</string>
-   </property>
-  </action>
-  <action name="actionPinZiXing">
-   <property name="text">
-    <string>品字型</string>
-   </property>
-   <property name="toolTip">
-    <string>品字型</string>
-   </property>
-  </action>
   <action name="actionword">
    <property name="icon">
-    <iconset>
-     <normalon>:/imgs/imgs/T.png</normalon>
-    </iconset>
+    <iconset resource="asset.qrc">
+     <normaloff>:/imgs/imgs/t1.png</normaloff>
+     <normalon>:/imgs/imgs/T.png</normalon>:/imgs/imgs/t1.png</iconset>
    </property>
    <property name="text">
     <string>word</string>
@@ -442,8 +431,11 @@
    </property>
   </action>
   <action name="actionXiFuGrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>全点量网格</string>
+    <string>吸附</string>
    </property>
    <property name="toolTip">
     <string>吸附</string>
@@ -455,6 +447,45 @@
    </property>
    <property name="toolTip">
     <string>删除</string>
+   </property>
+  </action>
+  <action name="actionbianyaqi">
+   <property name="icon">
+    <iconset>
+     <normalon>:/imgs/imgs/b.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>变压器</string>
+   </property>
+   <property name="toolTip">
+    <string>变压器</string>
+   </property>
+  </action>
+  <action name="actionguiti">
+   <property name="icon">
+    <iconset>
+     <normalon>:/imgs/imgs/g.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>柜体</string>
+   </property>
+   <property name="toolTip">
+    <string>柜体</string>
+   </property>
+  </action>
+  <action name="action750_900">
+   <property name="text">
+    <string>750*900</string>
+   </property>
+   <property name="toolTip">
+    <string>750*900</string>
+   </property>
+  </action>
+  <action name="action900_1000">
+   <property name="text">
+    <string>900*1000</string>
    </property>
   </action>
  </widget>

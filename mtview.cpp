@@ -5,32 +5,35 @@ mtview::mtview(QWidget* parent):QGraphicsView (parent)
 
 }
 
-void mtview::mouseMoveEvent(QMouseEvent *event)
+//void mtview::mouseMoveEvent(QMouseEvent *event)
+//{
+//    QPoint p=event->pos();
+//    emit mouseMovePoint(p);
+//    QGraphicsView::mouseMoveEvent(event);
+
+//}
+
+//void mtview::mousePressEvent(QMouseEvent *event)
+//{
+//    if(event->button()==Qt::LeftButton){
+
+//        QPoint pf=event->pos();
+//       emit mousePressPoint(pf);
+//    }
+
+//    QGraphicsView::mousePressEvent(event);
+
+//}
+
+void mtview::mouseReleaseEvent(QMouseEvent *event)
 {
-    QPoint p=event->pos();
-    emit mouseMovePoint(p);
-    QGraphicsView::mouseMoveEvent(event);
+    if(event->button()==Qt::LeftButton){
 
-}
-
-void mtview::mousePressEvent(QMouseEvent *event)
-{
-    if(event->buttons()==Qt::LeftButton){
-
-        QPoint pf=event->pos();
-       emit mousePressPoint(pf);
+        QPoint p=event->pos();
+        emit  mouseReleasePoint(p);
     }
 
-    QGraphicsView::mousePressEvent(event);
-
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
-void mtview::drawMoveEvent(QDragMoveEvent *event)
-{
 
-    event->accept();
-    QPoint p=event->pos();
-    emit mouseDragPoint(p);
-    QGraphicsView::dragMoveEvent(event);
-
-}

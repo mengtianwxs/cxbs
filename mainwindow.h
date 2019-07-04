@@ -24,18 +24,19 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QMap<QString,QString> map;
+    QMap<QString,QString> map_byq;
     QGraphicsView* view;
     QGraphicsScene* scene;
     QGraphicsTextItem* gti;
     QActionGroup* ag_al;
     QActionGroup* ag_ad;
     QActionGroup* ag_ah;
-    QActionGroup* ag_as;
+    QActionGroup* ag_as_byq;
 
     QString str_design="";
     mtp* p;
     bool isDisplayGrid=true;
+    bool isXiFu=true;
 
 
 public:
@@ -64,20 +65,20 @@ private slots:
     void on_actionL4_triggered();
     void on_actionL5_triggered();
 
-    void on_action_caohuimenu_triggered();
-    void on_actioncaohui_triggered();
-    void on_actionDemo_triggered();
     void on_actionDrawGrid_triggered();
-    void on_action_triggered();
     void on_actionborder_triggered();
 
-    void method_onViewMouseMove(QPoint pv);
-    void method_onViewClick(QPoint pv);
+//    void method_onViewMouseMove(QPoint pv);
+//    void method_onViewClick(QPoint pv);
     void on_actionword_triggered();
     void on_actionDeleteItem_triggered();
-    void method_onDragMouseMove(QPoint pv);
+    void method_onMouseRelease(QPoint pv);
 
-    void method_ontextdragMove(QPointF pf);
+//    void method_ontextdragMove(QPointF pf);
+    void on_actionbianyaqi_triggered();
+
+    void on_actionXiFuGrid_triggered();
+    void method_onToggleXifu(bool b);
 };
 
 #endif // MAINWINDOW_H

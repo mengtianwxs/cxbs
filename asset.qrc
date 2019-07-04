@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/imgs">
         <file>imgs/mao.png</file>
-        <file>imgs/T.png</file>
+        <file>imgs/b.png</file>
+        <file>imgs/g.png</file>
+        <file>imgs/t1.png</file>
     </qresource>
 </RCC>
