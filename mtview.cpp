@@ -13,17 +13,17 @@ mtview::mtview(QWidget* parent):QGraphicsView (parent)
 
 //}
 
-//void mtview::mousePressEvent(QMouseEvent *event)
-//{
-//    if(event->button()==Qt::LeftButton){
+void mtview::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
 
-//        QPoint pf=event->pos();
-//       emit mousePressPoint(pf);
-//    }
+        QPoint pf=event->pos();
+       emit mousePressPoint(pf);
+    }
 
-//    QGraphicsView::mousePressEvent(event);
+    QGraphicsView::mousePressEvent(event);
 
-//}
+}
 
 void mtview::mouseReleaseEvent(QMouseEvent *event)
 {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>800</height>
+    <width>1330</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="page">
          <property name="geometry">
@@ -45,7 +45,7 @@
            <x>0</x>
            <y>0</y>
            <width>230</width>
-           <height>169</height>
+           <height>143</height>
           </rect>
          </property>
          <attribute name="label">
@@ -97,13 +97,13 @@
            <x>0</x>
            <y>0</y>
            <width>230</width>
-           <height>169</height>
+           <height>143</height>
           </rect>
          </property>
          <attribute name="label">
           <string>柜体</string>
          </attribute>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -151,6 +151,58 @@
           </layout>
          </widget>
         </widget>
+        <widget class="QWidget" name="page_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>230</width>
+           <height>143</height>
+          </rect>
+         </property>
+         <attribute name="label">
+          <string>间距</string>
+         </attribute>
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>1</x>
+            <y>11</y>
+            <width>189</width>
+            <height>77</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>左右间距</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_hline"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>上下间距</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_vline"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="pb_setjianju">
+             <property name="text">
+              <string>设置</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </widget>
        <widget class="QTextEdit" name="textEdit">
         <property name="geometry">
@@ -172,7 +224,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1100</width>
+     <width>1330</width>
      <height>23</height>
     </rect>
    </property>
@@ -206,6 +258,11 @@
     </property>
     <addaction name="action750_900"/>
     <addaction name="action900_1000"/>
+    <addaction name="separator"/>
+    <addaction name="action600_600"/>
+    <addaction name="action800_600"/>
+    <addaction name="action1000_600"/>
+    <addaction name="action1200_600"/>
    </widget>
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
@@ -223,6 +280,10 @@
    <addaction name="actionXiFuGrid"/>
    <addaction name="separator"/>
    <addaction name="actionDeleteItem"/>
+   <addaction name="separator"/>
+   <addaction name="actioncombine"/>
+   <addaction name="separator"/>
+   <addaction name="actionfenjie"/>
    <addaction name="separator"/>
    <addaction name="action_jiegou"/>
   </widget>
@@ -486,6 +547,42 @@
   <action name="action900_1000">
    <property name="text">
     <string>900*1000</string>
+   </property>
+  </action>
+  <action name="actioncombine">
+   <property name="text">
+    <string>合并</string>
+   </property>
+   <property name="toolTip">
+    <string>合并</string>
+   </property>
+  </action>
+  <action name="actionfenjie">
+   <property name="text">
+    <string>分解</string>
+   </property>
+   <property name="toolTip">
+    <string>分解</string>
+   </property>
+  </action>
+  <action name="action600_600">
+   <property name="text">
+    <string>600*600</string>
+   </property>
+  </action>
+  <action name="action800_600">
+   <property name="text">
+    <string>800*600</string>
+   </property>
+  </action>
+  <action name="action1000_600">
+   <property name="text">
+    <string>1000*600</string>
+   </property>
+  </action>
+  <action name="action1200_600">
+   <property name="text">
+    <string>1200*600</string>
    </property>
   </action>
  </widget>

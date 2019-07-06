@@ -12,13 +12,13 @@ class mtview : public QGraphicsView
 public:
     mtview(QWidget* parent);
 //    void mouseMoveEvent(QMouseEvent* event);
-//    void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent *event);
 
 
 signals:
 //    void mouseMovePoint(QPoint p);
-//    void mousePressPoint(QPoint p);
+    void mousePressPoint(QPoint p);
     void mouseReleasePoint(QPoint p);
 };
 

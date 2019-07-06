@@ -39,12 +39,14 @@ void mtp::drawGrid()
 
 
 
+
     }
     //shu
     for(int n=1;n<b+10;n++){
 
             QGraphicsLineItem* item = new QGraphicsLineItem(seg*n,seg,seg*n,seg*b);
             scene->addItem(item);
+//            item->setPen(pen);
             item->setOpacity(0.5);
             list_gird.append(item);
     }
@@ -80,6 +82,24 @@ void mtp::drawGrid()
     }
 
 
+
+    QListIterator<QGraphicsItem*> ti(list_gird);
+    while (ti.hasNext()) {
+
+        ti.next()->setSelected(false);
+        ti.next()->setZValue(-100);
+        ti.next()->setEnabled(false);
+    }
+
+
+//    qDebug()<<"numoflistgrid "<<list_gird.count();
+
+
+
+
+
+
+
 }
 
 void mtp::deleteGrid()
@@ -98,8 +118,12 @@ void mtp::deleteGrid()
 void mtp::drawByq(int sx, int sy, int w, int h)
 {
      QGraphicsRectItem* rect=new QGraphicsRectItem(sx,sy,w,h);
-     rect->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+
      scene->addItem(rect);
+//     rect->clearFocus();
+//     rect->setSelected(false);
+          rect->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+
 
      QPen p;
      p.setWidth(3);
@@ -108,6 +132,24 @@ void mtp::drawByq(int sx, int sy, int w, int h)
      brush.setColor(Qt::red);
      brush.setStyle(Qt::SolidPattern);
      rect->setBrush(brush);
+
+    /* QGraphicsSimpleTextItem* txtItem=new QGraphicsSimpleTextItem();
+     txtItem->setText(txt);
+     txtItem->setPos(QPointF(w/2,h/2));
+     scene->addItem(txtItem);
+     txtItem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+
+//     txtItem->clearFocus();
+//     txtItem->setSelected(false);
+
+     QGraphicsItemGroup* group=new QGraphicsItemGroup();
+     scene->addItem(group);
+     group->addToGroup(rect);
+     group->addToGroup(txtItem);
+     group->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);*/
+
+
+
 
 }
 

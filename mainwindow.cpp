@@ -2,6 +2,7 @@
 #include "mttextitem.h"
 #include "ui_mainwindow.h"
 
+#include <QDesktopWidget>
 #include <QInputDialog>
 #include <QString>
 #include<QtAlgorithms>
@@ -13,25 +14,38 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->resize(1330,800);
+
+    QDesktopWidget* desktop=QApplication::desktop();
+    int dw=desktop->screen()->width();
+    int dh=desktop->screen()->height();
+
+    this->move((dw-1330)/2,30);
+//    this->move(0,0);
+
+
+ qDebug()<<this->width()<<this->height()<<"fdfsd"<<dw<<dh;
 
     method_initUI();
     method_initData();
 
     view=ui->ui_gv;
-    scene=new QGraphicsScene(QRectF(0,0,990,790));
+    scene=new QGraphicsScene();
     view->setScene(scene);
     view->setFixedSize(1100,800);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     ui->tabWidget->setFixedWidth(225);
+
+
 
       p=new mtp(scene);
 
 //      ui->actionPinZiXing->setEnabled(false);
 
 //      connect(view,SIGNAL(mouseMovePoint(QPoint)),this,SLOT(method_onViewMouseMove(QPoint)));
-     // connect(view,SIGNAL(mousePressPoint(QPoint)),this,SLOT(method_onViewClick(QPoint)));
+      connect(view,SIGNAL(mousePressPoint(QPoint)),this,SLOT(method_onViewClick(QPoint)));
       connect(view,SIGNAL(mouseReleasePoint(QPoint)),this,SLOT(method_onMouseRelease(QPoint)));
       connect(ui->actionXiFuGrid,SIGNAL(toggled(bool)),this,SLOT(method_onToggleXifu(bool)));
 
@@ -47,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
      cbg->addButton(ui->cb_heng);
      cbg->addButton(ui->cb_shu);
      ui->cb_heng->setChecked(true);
+
 
 
 
@@ -236,10 +251,7 @@ void MainWindow::on_actionDrawGrid_triggered()
 
 
 
-void MainWindow::on_actionborder_triggered()
-{
-    p->drawBorder(40,40,400,300);
-}
+
 
 
 void MainWindow::on_actionword_triggered()
@@ -256,7 +268,7 @@ void MainWindow::on_actionword_triggered()
        scene->clearSelection();
 
        connect(ti,SIGNAL(dragMovePoint(QPointF)),this,SLOT(method_ontextdragMove(QPointF)));
-       qDebug()<<"connect text";
+//       qDebug()<<"connect text";
 
    }
 
@@ -276,10 +288,10 @@ void MainWindow::on_actionword_triggered()
 //    }
 //}
 
-//void MainWindow::method_onViewClick(QPoint pv)
-//{
+void MainWindow::method_onViewClick(QPoint pv)
+{
 
-////    qDebug()<<"onviewclick";
+//    qDebug()<<"onviewclick";
 
 //    QPointF obj_point=view->mapToScene(pv);
 //    QGraphicsItem* item=scene->itemAt(obj_point,view->transform());
@@ -292,7 +304,7 @@ void MainWindow::on_actionword_triggered()
 //    }
 
 
-//}
+}
 
 
 
@@ -311,56 +323,70 @@ void MainWindow::method_onMouseRelease(QPoint pv)
 
     QPointF pf=view->mapToScene(pv);
     QGraphicsItem * item=scene->itemAt(pf,view->transform());
-    if(item!=NULL){
 
-//     qDebug()<<"itemx "<<item->x()<<"itemy "<<item->y();
-     QList<int> posx=p->grid_posx;
-     QList<int> posy=p->grid_posy;
-     int itempx=item->x();
-     int itempy=item->y();
-//     qDebug()<<"ppx"<<itempx<<" ppy"<<itempy;
 
-     QList<int>::iterator ix=qLowerBound(posx.begin(),posx.end(),itempx);
-     QList<int>::iterator iy=qLowerBound(posy.begin(),posy.end(),itempy);
+    if((item!=NULL) && isXiFu && (item->flags()!=NULL) )
+    {
 
-     int index_x=0;
-     int index_y=0;
+        //     qDebug()<<"itemx "<<item->x()<<"itemy "<<item->y();
+        //获取网格中的所有点的坐标
+        QList<int> posx=p->grid_posx;
+        QList<int> posy=p->grid_posy;
+        //获取选中图元的坐标
+        int itempx=item->x();
+        int itempy=item->y();
 
-     for(int n=0;n<posx.length();n++){
 
-         if(posx.at(n)==*ix){
-             index_x=n;
-         }
-     }
+        //判断图元的坐标在网格范围内，如果超出网格则无效
+        if(itempx>20 and itempy >20 and itempx<960 and itempy<780){
 
-     for(int m=0;m<posy.length();m++){
+            // 获取最接近网格的坐标
+            QList<int>::iterator ix=qLowerBound(posx.begin(),posx.end(),itempx);
+            QList<int>::iterator iy=qLowerBound(posy.begin(),posy.end(),itempy);
+//            qDebug()<<"网格的坐标x"<<*ix<<"网格的坐标y"<<*iy;
+            //      item->setPos(QPointF(*ix,*iy));
+            //     if(*ix<20 or *iy <20 or ix>)
 
-         if(posy.at(m)==*iy){
-             index_y=m;
-         }
-     }
-      int newx=0;
-      int newy=0;
 
-      if(index_x==0){
-          newx=20;
 
-      }else{
-          newx=posx.at(index_x-1);
-      }
+            //获取当前的位置索引
+            int index_x=0;
+            int index_y=0;
 
-      if(index_y==0){
+            for(int n=0;n<posx.length();n++){
 
-          newy=20;
-      }else{
-          newy=posy.at(index_y-1);
-      }
-      qDebug()<<newx<<","<<newy;
+                if(posx.at(n)==*ix){
+                    index_x=n;
+                }
+            }
 
-      item->setPos(QPointF(newx,newy));
+            for(int m=0;m<posy.length();m++){
 
-      ui->statusBar->showMessage("item ( "+QString::number(item->x())+" , "+QString::number(item->y())+" )");
+                if(posy.at(m)==*iy){
+                    index_y=m;
+                }
+            }
+
+            //新的索引位置
+            int newx=0;
+            int newy=0;
+            newx=posx.at(index_x-1);
+            newy=posy.at(index_y-1);
+
+//            qDebug()<<"newx "<<newx<<","<<"newy "<<newy;
+
+            item->setPos(QPointF(newx,newy));
+
+        }
+
+
     }
+    if(item != NULL){
+
+     ui->statusBar->showMessage("item ( "+QString::number(item->x())+" , "+QString::number(item->y())+" )");
+    }
+
+
 
 }
 
@@ -383,6 +409,7 @@ void MainWindow::method_onMouseRelease(QPoint pv)
 void MainWindow::on_actionbianyaqi_triggered()
 {
 //    qDebug()<<ag_as_byq->checkedAction()->text();
+
     QString byqtype=ag_as_byq->checkedAction()->text().toLower();
 //    qDebug()<<map_byq[byqtype];
     QString byqsize=map_byq[byqtype];
@@ -390,34 +417,131 @@ void MainWindow::on_actionbianyaqi_triggered()
     int byq_deep=byqsize_list.at(0).toInt();
     int byq_width=byqsize_list.at(1).toInt();
 
-    p->drawByq(40,40,byq_deep/10,byq_width/10);
+//    qDebug()<<"cbstate"<<ui->cb_heng->isChecked()<<ui->cb_shu->isChecked();
+
+    if(ui->cb_heng->isChecked()){
+    p->drawByq(0,0,byq_deep/10,byq_width/10);
+
+    }
+
+    if(ui->cb_shu->isChecked()){
+        p->drawByq(0,0,byq_width/10,byq_deep/10);
+    }
+
 //    qDebug()<<"byqdeep "<<byq_deep<<" byqwidht"<<byq_width;
 
 }
 
 
-void MainWindow::on_actionXiFuGrid_triggered()
-{
-    if(ui->actionXiFuGrid->isCheckable()){
-        ui->statusBar->showMessage("吸附网格打开");
-    }
 
-    else{
-       ui->statusBar->showMessage("吸附网格关闭");
-    }
-}
 
 void MainWindow::method_onToggleXifu(bool b)
 {
+ b?isXiFu=true:isXiFu=false;
+ qDebug()<<"xifu "<<isXiFu;
 
-
-    if(b){
+    if(isXiFu==true){
         ui->statusBar->showMessage("吸附网格打开");
     }
 
-    else{
+    if(isXiFu==false){
        ui->statusBar->showMessage("吸附网格关闭");
     }
 
-     b?isXiFu=true:isXiFu=false;
+
+}
+
+void MainWindow::on_actioncombine_triggered()
+{
+
+    int num=scene->selectedItems().count();
+    qDebug()<<num;
+    if(num>=2){
+
+        QGraphicsItemGroup* itemGroup=new QGraphicsItemGroup();
+         scene->addItem(itemGroup);
+         itemGroup->setData(0,"group");
+
+        for(int i=0;i<num;i++){
+            QGraphicsItem* item=scene->selectedItems().at(0);
+            item->clearFocus();
+            item->setSelected(false);
+            itemGroup->addToGroup(item);
+
+        }
+
+
+        itemGroup->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+        scene->clearSelection();
+        itemGroup->setSelected(true);
+
+    }
+
+
+}
+
+void MainWindow::on_actionfenjie_triggered()
+{
+    int num=scene->selectedItems().count();
+
+    if(num==1){
+        QGraphicsItem* item=scene->selectedItems().at(0);
+        if(item->data(0)=="group"){
+            QGraphicsItemGroup * group=(QGraphicsItemGroup*)item;
+            scene->destroyItemGroup(group);
+
+        }
+
+
+
+    }
+}
+
+
+
+void MainWindow::on_pb_setjianju_clicked()
+{
+
+   int num=scene->selectedItems().count();
+    qDebug()<<"click"<<num;
+   if(num==2){
+
+        QGraphicsItem* item1=scene->selectedItems().at(0);
+        QGraphicsItem* item2=scene->selectedItems().at(1);
+//        qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
+        int item1width=item1->boundingRect().width();
+        int item1height=item1->boundingRect().height();
+        int item1posx=item1->x();
+        int item1posy=item1->y();
+
+        int item2width=item2->boundingRect().width();
+        int item2height=item2->boundingRect().height();
+        int item2posx=item2->x();
+        int item2posy=item2->y();
+
+
+
+      QRegExp re("[1-9][1-9][1-9][1-9][1-9][1-9]");
+      QValidator* val=new QRegExpValidator(re,this);
+      ui->le_hline->setValidator(val);
+      ui->le_vline->setValidator(val);
+
+      int vspace=ui->le_vline->text().toInt();
+      int hspace=ui->le_hline->text().toInt();
+      //cm
+      if(hspace>0){
+          if(item1posx<item2posx){
+              item2->setX(item1posx+item1width+hspace);
+          }
+
+          if(item1posx>item2posx){
+              item1->setX(item2posx+item2width+hspace);
+
+          }
+      }
+
+
+
+
+   }
 }

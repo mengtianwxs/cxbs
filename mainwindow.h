@@ -10,6 +10,7 @@
 #include "mtp.h"
 
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -36,7 +37,7 @@ private:
     QString str_design="";
     mtp* p;
     bool isDisplayGrid=true;
-    bool isXiFu=true;
+    bool isXiFu=false;
 
 
 public:
@@ -66,10 +67,9 @@ private slots:
     void on_actionL5_triggered();
 
     void on_actionDrawGrid_triggered();
-    void on_actionborder_triggered();
 
 //    void method_onViewMouseMove(QPoint pv);
-//    void method_onViewClick(QPoint pv);
+    void method_onViewClick(QPoint pv);
     void on_actionword_triggered();
     void on_actionDeleteItem_triggered();
     void method_onMouseRelease(QPoint pv);
@@ -77,8 +77,10 @@ private slots:
 //    void method_ontextdragMove(QPointF pf);
     void on_actionbianyaqi_triggered();
 
-    void on_actionXiFuGrid_triggered();
     void method_onToggleXifu(bool b);
+    void on_actioncombine_triggered();
+    void on_actionfenjie_triggered();
+    void on_pb_setjianju_clicked();
 };
 
 #endif // MAINWINDOW_H
