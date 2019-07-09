@@ -14,12 +14,15 @@ public:
     QList<QGraphicsItem*> list_gird;
     QList<int> grid_posx;
     QList<int> grid_posy;
+    QList<QGraphicsItem*> list_items;
 
     mtp(QGraphicsScene* scene);
     void drawBorder(int sx,int sy,int w,int h);
     void drawGrid();
     void deleteGrid();
-    void drawByq(int sx,int sy,int w,int h);
+    QGraphicsItem* drawByq(int sx,int sy,int w,int h);
+    QGraphicsItem* drawGuiti(int sx,int sy,int w,int h);
+    QGraphicsItem* drawZhouPoint(int sx,int sy,int r);
 };
 
 #endif // MTP_H

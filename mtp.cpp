@@ -21,8 +21,8 @@ void mtp::drawGrid()
 {
 
     QPen pen;
-    pen.setWidth(3);
-    pen.setColor(Qt::red);
+    pen.setWidth(2);
+//    pen.setColor(Qt::red);
 
 
     int seg=20;
@@ -32,7 +32,7 @@ void mtp::drawGrid()
 
             QGraphicsLineItem* item = new QGraphicsLineItem(seg,seg*n,(b+9)*seg,seg*n);
             item->setPen(pen);
-            item->setOpacity(0.5);
+            item->setOpacity(0.1);
             scene->addItem(item);
             list_gird.append(item);
 
@@ -47,7 +47,7 @@ void mtp::drawGrid()
             QGraphicsLineItem* item = new QGraphicsLineItem(seg*n,seg,seg*n,seg*b);
             scene->addItem(item);
 //            item->setPen(pen);
-            item->setOpacity(0.5);
+            item->setOpacity(0.1);
             list_gird.append(item);
     }
 
@@ -115,41 +115,71 @@ void mtp::deleteGrid()
 
 }
 
-void mtp::drawByq(int sx, int sy, int w, int h)
+QGraphicsItem* mtp::drawByq(int sx, int sy, int w, int h)
 {
      QGraphicsRectItem* rect=new QGraphicsRectItem(sx,sy,w,h);
-
      scene->addItem(rect);
-//     rect->clearFocus();
-//     rect->setSelected(false);
-          rect->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
-
+     rect->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
 
      QPen p;
-     p.setWidth(3);
+     p.setWidth(0);
+     p.setColor(Qt::red);
      rect->setPen(p);
      QBrush brush;
      brush.setColor(Qt::red);
-     brush.setStyle(Qt::SolidPattern);
+     brush.setStyle(Qt::Dense7Pattern);
      rect->setBrush(brush);
+     rect->setData(0,"byq");
+     rect->setSelected(false);
+     rect->clearFocus();
+     list_items.append(rect);
 
-    /* QGraphicsSimpleTextItem* txtItem=new QGraphicsSimpleTextItem();
-     txtItem->setText(txt);
-     txtItem->setPos(QPointF(w/2,h/2));
-     scene->addItem(txtItem);
-     txtItem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
 
-//     txtItem->clearFocus();
-//     txtItem->setSelected(false);
-
-     QGraphicsItemGroup* group=new QGraphicsItemGroup();
-     scene->addItem(group);
-     group->addToGroup(rect);
-     group->addToGroup(txtItem);
-     group->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);*/
+     return rect;
 
 
 
+}
+
+QGraphicsItem* mtp::drawGuiti(int sx, int sy, int w, int h)
+{
+    QGraphicsRectItem* rect=new QGraphicsRectItem(sx,sy,w,h);
+    scene->addItem(rect);
+    rect->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+
+    QPen p;
+    p.setWidth(0);
+    p.setColor(Qt::blue);
+    rect->setPen(p);
+    QBrush brush;
+    brush.setColor(Qt::blue);
+    brush.setStyle(Qt::BDiagPattern);
+    rect->setBrush(brush);
+    rect->setData(0,"guiti");
+    rect->setSelected(false);
+    rect->clearFocus();
+    list_items.append(rect);
+    return rect;
+
+
+}
+
+QGraphicsItem *mtp::drawZhouPoint(int sx, int sy, int r)
+{
+    QGraphicsEllipseItem* c=new QGraphicsEllipseItem(QRectF(sx,sy,r,r));
+    scene->addItem(c);
+
+    QPen p;
+    p.setWidth(0);
+    c->setPen(p);
+    QBrush brush;
+    brush.setColor(Qt::black);
+    brush.setStyle(Qt::SolidPattern);
+    c->setBrush(brush);
+    c->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+    c->setData(0,"zp");
+    list_items.append(c);
+    return c;
 
 }
 

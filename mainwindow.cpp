@@ -5,8 +5,9 @@
 #include <QDesktopWidget>
 #include <QInputDialog>
 #include <QString>
+#include <QTimer>
 #include<QtAlgorithms>
-#include<algorithm>
+#include<QtMath>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,20 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->resize(1330,800);
+    this->resize(1430,800);
 
     QDesktopWidget* desktop=QApplication::desktop();
     int dw=desktop->screen()->width();
     int dh=desktop->screen()->height();
 
     this->move((dw-1330)/2,30);
-//    this->move(0,0);
-
-
- qDebug()<<this->width()<<this->height()<<"fdfsd"<<dw<<dh;
-
-    method_initUI();
-    method_initData();
 
     view=ui->ui_gv;
     scene=new QGraphicsScene();
@@ -36,31 +30,20 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    ui->tabWidget->setFixedWidth(225);
+    ui->tabWidget->setFixedWidth(400);
+
+    p=new mtp(scene);
 
 
+    //connect(view,SIGNAL(mouseMovePoint(QPoint)),this,SLOT(method_onViewMouseMove(QPoint)));
+    connect(view,SIGNAL(mousePressPoint(QPoint)),this,SLOT(method_onViewClick(QPoint)));
+    connect(view,SIGNAL(mouseReleasePoint(QPoint)),this,SLOT(method_onMouseRelease(QPoint)));
+    connect(ui->actionXiFuGrid,SIGNAL(toggled(bool)),this,SLOT(method_onToggleXifu(bool)));
 
-      p=new mtp(scene);
-
-//      ui->actionPinZiXing->setEnabled(false);
-
-//      connect(view,SIGNAL(mouseMovePoint(QPoint)),this,SLOT(method_onViewMouseMove(QPoint)));
-      connect(view,SIGNAL(mousePressPoint(QPoint)),this,SLOT(method_onViewClick(QPoint)));
-      connect(view,SIGNAL(mouseReleasePoint(QPoint)),this,SLOT(method_onMouseRelease(QPoint)));
-      connect(ui->actionXiFuGrid,SIGNAL(toggled(bool)),this,SLOT(method_onToggleXifu(bool)));
-
-      view->setMouseTracking(true);
-      view->setDragMode(QGraphicsView::RubberBandDrag);
-      view->setCursor(Qt::CrossCursor);
-
-
-
-
-
-     QButtonGroup* cbg=new QButtonGroup();
-     cbg->addButton(ui->cb_heng);
-     cbg->addButton(ui->cb_shu);
-     ui->cb_heng->setChecked(true);
+    view->setMouseTracking(true);
+    view->setDragMode(QGraphicsView::RubberBandDrag);
+    view->setCursor(Qt::CrossCursor);
+    view->setRenderHint(QPainter::Antialiasing);
 
 
 
@@ -69,6 +52,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
+    ui->te_info->setEnabled(false);
+    ui->te_info->setText("init complete!\n");
+
+    timer=new QTimer(this);
+    timer->setInterval(1000);
+    timer->start();
+    connect(timer,SIGNAL(timeout()),this,SLOT(method_onTimerOut()));
+     method_initData();
+
+     ui->le_hline->setText("=");
+     ui->le_vline->setText("=");
+
+
+     connect(cbg,SIGNAL(buttonToggled(QAbstractButton *,bool)),this,SLOT(method_onbuttonToggled(QAbstractButton *,bool)));
 }
 
 MainWindow::~MainWindow()
@@ -78,6 +75,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::method_initData()
 {
+
+    cbg=new QButtonGroup();
+    cbg->addButton(ui->cb_heng);
+    cbg->addButton(ui->cb_shu);
+    ui->cb_heng->setChecked(true);
+
    map_byq.insert("s11-30","745*580");
    map_byq.insert("s11-50","795*600");
    map_byq.insert("s11-63","825*610");
@@ -99,11 +102,6 @@ void MainWindow::method_initData()
    map_byq.insert("s11-2500","2220*1415");
 
 
-
-//   ag_ad=new QActionGroup(this);
-//   ag_ad->addAction(ui->action_pin);
-//   ag_ad->addAction(ui->action_mu);
-//   ag_ad->setExclusive(true);
 
 
 
@@ -127,20 +125,31 @@ void MainWindow::method_initData()
    ag_as_byq->addAction(ui->actionS11_1600);
    ag_as_byq->addAction(ui->actionS11_2000);
    ag_as_byq->addAction(ui->actionS11_2500);
-
-
-
-
-
-}
-
-void MainWindow::method_initUI()
-{
-//   ui->action_pin->setChecked(true);
-   str_design="pin";
    ui->actionS11_630->setChecked(true);
 
+
+   ag_guiti=new QActionGroup(this);
+   ag_guiti->addAction(ui->action750_900);
+   ag_guiti->addAction(ui->action900_1000);
+   ag_guiti->addAction(ui->action1000_600);
+   ag_guiti->addAction(ui->action600_600);
+   ag_guiti->addAction(ui->action800_600);
+   ag_guiti->addAction(ui->action1200_600);
+   ui->action750_900->setChecked(true);
+//   map_guiti.insert("750*900","750*900");
+//   map_guiti.insert("900*1000","900*1000");
+//   map_guiti.insert("900*1000","1000*600");
+//   map_guiti.insert("900*1000","900*1000");
+//   map_guiti.insert("900*1000","900*1000");
+//   map_guiti.insert("900*1000","900*1000");
+//   map_guiti.insert("900*1000","900*1000");
+
+
+
+
+
 }
+
 
 void MainWindow::method_displayGrid()
 {
@@ -293,15 +302,21 @@ void MainWindow::method_onViewClick(QPoint pv)
 
 //    qDebug()<<"onviewclick";
 
+    //鼠标单击的点判断有没有图元
 //    QPointF obj_point=view->mapToScene(pv);
 //    QGraphicsItem* item=scene->itemAt(obj_point,view->transform());
 
 //    if(item !=NULL ){
 
-//        QPointF item_point=item->mapFromScene(obj_point);
+////        QPointF item_point=item->mapFromScene(obj_point);
 
-//        qDebug()<<"itemx "<<item_point.x()<<"itemy "<<item_point.y();
+////        qDebug()<<"itemx "<<item_point.x()<<"itemy "<<item_point.y();
+
+//        int index=scene->selectedItems().indexOf(item);
+//        qDebug()<<index<<"index";
 //    }
+
+
 
 
 }
@@ -408,16 +423,12 @@ void MainWindow::method_onMouseRelease(QPoint pv)
 
 void MainWindow::on_actionbianyaqi_triggered()
 {
-//    qDebug()<<ag_as_byq->checkedAction()->text();
 
     QString byqtype=ag_as_byq->checkedAction()->text().toLower();
-//    qDebug()<<map_byq[byqtype];
     QString byqsize=map_byq[byqtype];
     QStringList byqsize_list=byqsize.split("*");
     int byq_deep=byqsize_list.at(0).toInt();
     int byq_width=byqsize_list.at(1).toInt();
-
-//    qDebug()<<"cbstate"<<ui->cb_heng->isChecked()<<ui->cb_shu->isChecked();
 
     if(ui->cb_heng->isChecked()){
     p->drawByq(0,0,byq_deep/10,byq_width/10);
@@ -428,7 +439,6 @@ void MainWindow::on_actionbianyaqi_triggered()
         p->drawByq(0,0,byq_width/10,byq_deep/10);
     }
 
-//    qDebug()<<"byqdeep "<<byq_deep<<" byqwidht"<<byq_width;
 
 }
 
@@ -455,12 +465,14 @@ void MainWindow::on_actioncombine_triggered()
 {
 
     int num=scene->selectedItems().count();
-    qDebug()<<num;
+//    qDebug()<<num;
     if(num>=2){
 
         QGraphicsItemGroup* itemGroup=new QGraphicsItemGroup();
          scene->addItem(itemGroup);
          itemGroup->setData(0,"group");
+         itemGroup->setX(0);
+         itemGroup->setY(0);
 
         for(int i=0;i<num;i++){
             QGraphicsItem* item=scene->selectedItems().at(0);
@@ -474,6 +486,7 @@ void MainWindow::on_actioncombine_triggered()
         itemGroup->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
         scene->clearSelection();
         itemGroup->setSelected(true);
+        itemGroup->setData(0,"ig");
 
     }
 
@@ -503,11 +516,49 @@ void MainWindow::on_pb_setjianju_clicked()
 {
 
    int num=scene->selectedItems().count();
-    qDebug()<<"click"<<num;
+//    qDebug()<<"click"<<num;
    if(num==2){
 
         QGraphicsItem* item1=scene->selectedItems().at(0);
         QGraphicsItem* item2=scene->selectedItems().at(1);
+
+        //判断是否为周点
+        bool isZP1=item1->data(0)=="zp"?true:false;
+        bool isZP2=item2->data(0)=="zp"?true:false;
+        //如果有一个是周点则不进行常规计算
+        bool isZP=isZP1 and isZP2;
+        qDebug()<<"zp"<<isZP1<<isZP2<<"1 2"<< isZP;
+        QGraphicsItem* itemzp=NULL;
+        QGraphicsItem* itemgt=NULL;
+        int zpx,zpy,gtx,gty,zpw,zph,gtw,gth=0;
+
+        if(item1->data(0)=="zp"){
+            itemzp=item1;
+            itemgt=item2;
+            zpx=item1->x();
+            zpy=item1->y();
+            zpw=item1->boundingRect().width();
+            zph=item1->boundingRect().height();
+            gtx=item2->x();
+            gty=item2->y();
+            gtw=item2->boundingRect().width();
+            gth=item2->boundingRect().height();
+        }
+        if(item2->data(0)=="zp"){
+            itemzp=item2;
+            itemgt=item1;
+
+            zpx=item2->x();
+            zpy=item2->y();
+            zpw=item2->boundingRect().width();
+            zph=item2->boundingRect().height();
+            gtx=item1->x();
+            gty=item1->y();
+            gtw=item1->boundingRect().width();
+            gth=item1->boundingRect().height();
+        }
+
+
 //        qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
         int item1width=item1->boundingRect().width();
         int item1height=item1->boundingRect().height();
@@ -521,27 +572,448 @@ void MainWindow::on_pb_setjianju_clicked()
 
 
 
-      QRegExp re("[1-9][1-9][1-9][1-9][1-9][1-9]");
-      QValidator* val=new QRegExpValidator(re,this);
-      ui->le_hline->setValidator(val);
-      ui->le_vline->setValidator(val);
 
-      int vspace=ui->le_vline->text().toInt();
-      int hspace=ui->le_hline->text().toInt();
-      //cm
-      if(hspace>0){
-          if(item1posx<item2posx){
-              item2->setX(item1posx+item1width+hspace);
-          }
+        QRegExp re("=?-?[0-9]{1,4}");
+        QValidator* val=new QRegExpValidator(re,ui->page_3);
+        ui->le_hline->setValidator(val);
+        ui->le_vline->setValidator(val);
+//没有周点的情况
+        if(re.exactMatch(ui->le_vline->text()) and isZP ){
+            qDebug()<<"this is vline mode";
 
-          if(item1posx>item2posx){
-              item1->setX(item2posx+item2width+hspace);
+            int vspace=ui->le_vline->text().toInt();
+            if(vspace<0){
+                //@1 如果设置成0则让右边的往左靠，下边的往上靠
+//               如果为正值下往上靠
 
-          }
-      }
+                if(item1posy<item2posy){
+
+                    item1->setY(item2posy-item1height-qFabs(vspace));
+                }
+
+                if(item1posy>item2posy){
+
+                    item2->setY(item1posy-item2height-qFabs(vspace));
+                }
+            }
+
+            if(vspace>=0){
+                if(item1posy<item2posy){
+
+                    item2->setY(item1posy+item1height+vspace);
+                }
+
+                if(item1posy>item2posy){
+
+                    item1->setY(item2posy+item2height+vspace);
+                }
+
+            }
+
+        }
+
+//有一个周点的情况 上下调整
+        if(re.exactMatch(ui->le_vline->text()) and isZP==false ){
+            qDebug()<<"this is zdian mode";
+
+            int vspace=ui->le_vline->text().toInt();
+
+            if(vspace<0){
+                //@1 如果设置成0则让右边的往左靠，下边的往上靠
+//               如果为正值下往上靠
+//            周点在图元的上方
+                if(zpy<gty){
+ qDebug()<<"周点在图元的上方";
+                    itemzp->setY(gty-qFabs(vspace));
+                }
+//            周点在图元的下方
+                if(zpy>gty){
+ qDebug()<<"周点在图元的下方";
+                    itemgt->setY(zpy-gth-qFabs(vspace));
+                }
+            }
+//##############################################################################################
+//            if(vspace>=0){
+//                if(item1posy<item2posy){
+
+//                    item2->setY(item1posy+item1height+vspace);
+//                }
+
+//                if(item1posy>item2posy){
+
+//                    item1->setY(item2posy+item2height+vspace);
+//                }
+
+//            }
+
+        }
+
+        if(re.exactMatch(ui->le_hline->text()) and isZP){
+            qDebug()<<"this is hvlinemode ";
+     int hspace=ui->le_hline->text().toInt();
+     //cm
+     if(hspace>=0){
+         if(item1posx<item2posx){
+             item2->setX(item1posx+hspace+item1width);
+         }
+
+         if(item1posx>item2posx){
+             item1->setX(item2posx+hspace+item2width);
+
+         }
+
+
+     }
+
+     if(hspace<0){
+         if(item1posx<item2posx){
+             item1->setX(item2posx-item1width-qFabs(hspace));
+         }
+
+         if(item1posx>item2posx){
+             item2->setX(item1posx-item2width-qFabs(hspace));
+
+         }
+
+
+     }
+}
+
+
 
 
 
 
    }
+}
+
+void MainWindow::method_onTimerOut()
+{
+//    qDebug()<<ag_as_byq->checkedAction()->text()<<ag_guiti->checkedAction()->text();
+    QString byqstate=ag_as_byq->checkedAction()->text();
+    QString guitistate=ag_guiti->checkedAction()->text();
+    ui->te_info->setText("变压器 "+byqstate+"\n");
+    ui->te_info->append("柜  体 "+guitistate+"\n");
+
+    QString cbcheck="";
+    if(ui->cb_heng->isChecked()){
+
+        cbcheck=" -";
+    }
+    if(ui->cb_shu->isChecked()){
+
+        cbcheck=" |";
+    }
+    ui->te_info->append("优先级别:"+cbcheck+"\n");
+
+   int num=scene->selectedItems().count();
+    if(num==2){
+
+         QGraphicsItem* item1=scene->selectedItems().at(0);
+         QGraphicsItem* item2=scene->selectedItems().at(1);
+ //        qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
+         int item1width=item1->boundingRect().width();
+         int item1height=item1->boundingRect().height();
+         int item1posx=item1->x();
+         int item1posy=item1->y();
+
+         int item2width=item2->boundingRect().width();
+         int item2height=item2->boundingRect().height();
+         int item2posx=item2->x();
+         int item2posy=item2->y();
+
+      ui->te_info->append("图元1 ( x "+QString::number(item1posx)+",y "+QString::number(item1posy)+"),( w "+QString::number(item1width)+",h "+QString::number(item1height)+")\n");
+      ui->te_info->append("图元2 ( x "+QString::number(item2posx)+",y "+QString::number(item2posy)+"),( w "+QString::number(item2width)+",h "+QString::number(item2height)+")\n");
+
+    }
+
+    if(num==1){
+        QGraphicsItem* item1=scene->selectedItems().at(0);
+        int item1width=item1->boundingRect().width();
+        int item1height=item1->boundingRect().height();
+        int item1posx=item1->x();
+        int item1posy=item1->y();
+        QString itemtype="";
+        if(item1->data(0)=="byq"){
+            itemtype="变压器";
+        }
+
+        if(item1->data(0)=="guiti"){
+            itemtype="内柜";
+        }
+        if(item1->data(0)=="zp"){
+            itemtype="周点";
+        }
+
+        ui->te_info->append(itemtype+" ( x "+QString::number(item1posx)+",y "+QString::number(item1posy)+"),( w "+QString::number(item1width)+",h "+QString::number(item1height)+")\n");
+
+    }
+
+
+
+
+
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    ui->le_hline->clear();
+    ui->le_vline->clear();
+    ui->le_hline->setText("=");
+    ui->le_vline->setText("=");
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    ui->le_gtdeep->clear();
+    ui->le_gtwidth->clear();
+
+}
+
+void MainWindow::on_actionguiti_triggered()
+{
+    QString gttype=ag_guiti->checkedAction()->text();
+    QStringList gtsize_list=gttype.split("*");
+    int gt_width=gtsize_list.at(0).toInt();
+    int gt_deep=gtsize_list.at(1).toInt();
+    qDebug()<<QString::number(gt_width)<<QString::number(gt_deep);
+
+    if(ui->cb_heng->isChecked()){
+    p->drawGuiti(0,0,gt_width/10,gt_deep/10);
+
+    }
+
+    if(ui->cb_shu->isChecked()){
+        p->drawGuiti(0,0,gt_deep/10,gt_width/10);
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    int width=ui->le_gtwidth->text().toInt();
+    int deep=ui->le_gtdeep->text().toInt();
+    if(width >100 && deep >100){
+    if(ui->cb_heng->isChecked()){
+    p->drawGuiti(0,0,width/10,deep/10);
+
+    }
+
+    if(ui->cb_shu->isChecked()){
+        p->drawGuiti(0,0,deep/10,width/10);
+    }
+    }
+
+}
+
+void MainWindow::method_onbuttonToggled(QAbstractButton * in, bool bo)
+{
+    int num=scene->selectedItems().count();
+    QString strin=in->text();
+    bool boolin=in->isChecked();
+    if(num==1){
+        QGraphicsItem* item=scene->selectedItems().at(0);
+        int itemx=item->x();
+        int itemy=item->y();
+        int itemwidth=item->boundingRect().width();
+        int itemheight=item->boundingRect().height();
+
+        if(strin=="-" and boolin){
+
+            if(item->data(0)=="byq"){
+                QGraphicsItem* itemw= p->drawByq(0,0,itemheight,itemwidth);
+                itemw->setPos(QPointF(itemx,itemy));
+                itemw->setSelected(true);
+
+                scene->removeItem(item);
+
+                qDebug()<<"heng byq";
+
+
+            }
+            if(item->data(0)=="guiti"){
+                QGraphicsItem* itemgt= p->drawGuiti(0,0,itemheight,itemwidth);
+                itemgt->setPos(QPointF(itemx,itemy));
+                 scene->removeItem(item);
+                 itemgt->setSelected(true);
+                qDebug()<<"heng gt";
+            }
+
+
+
+
+        }
+        if(strin=="|" and boolin){
+
+
+            if(item->data(0)=="byq"){
+                QGraphicsItem* itemw= p->drawByq(0,0,itemheight,itemwidth);
+                itemw->setPos(QPointF(itemx,itemy));
+                 itemw->setSelected(true);
+                scene->removeItem(item);
+                qDebug()<<"su byq";
+
+            }
+            if(item->data(0)=="guiti"){
+                QGraphicsItem* itemgt= p->drawGuiti(0,0,itemheight,itemwidth);
+                itemgt->setPos(QPointF(itemx,itemy));
+                itemgt->setSelected(true);
+                 scene->removeItem(item);
+                 qDebug()<<"su gt";
+            }
+
+
+        }
+//
+
+    }
+
+}
+
+void MainWindow::on_actionvjuzhong_triggered()
+{
+
+    //垂直居中
+    int num=scene->selectedItems().count();
+    if(num==2){
+        QGraphicsItem* item1=scene->selectedItems().at(0);
+        QGraphicsItem* item2=scene->selectedItems().at(1);
+//   qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
+        int item1width=item1->boundingRect().width();
+        int item1height=item1->boundingRect().height();
+        int item1posx=item1->x();
+        int item1posy=item1->y();
+
+        int item2width=item2->boundingRect().width();
+        int item2height=item2->boundingRect().height();
+        int item2posx=item2->x();
+        int item2posy=item2->y();
+
+        if(item1width==item2width){
+            if(item1posy<item2posy){
+
+                item2->setPos(item1posx,item2posy);
+            }
+            if(item1posy>item2posy){
+                item1->setPos(item2posx,item1posy);
+            }
+
+
+        }
+
+        if(item1width>item2width){
+            if(item1posy<item2posy){
+
+                 item2->setPos(item1posx+(item1width-item2width)/2,item2posy);
+              }
+
+            if(item1posy>item2posy){
+                item1->setPos(item1posx-(item1width-item2width)/2,item1posy);
+            }
+
+        }
+
+        if(item1width<item2width){
+
+            if(item1posy<item2posy){
+
+                 item2->setPos(item1posx-(item2width-item1width)/2,item2posy);
+              }
+
+            if(item1posy>item2posy){
+                item1->setPos((item2width-item1width)/2+item2posx,item1posy);
+            }
+        }
+
+
+
+
+    }
+}
+
+void MainWindow::on_actionhjuzhong_triggered()
+{
+
+    //水平居中
+    int num=scene->selectedItems().count();
+    if(num==2){
+        QGraphicsItem* item1=scene->selectedItems().at(0);
+        QGraphicsItem* item2=scene->selectedItems().at(1);
+
+
+//   qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
+        int item1width=item1->boundingRect().width();
+        int item1height=item1->boundingRect().height();
+        int item1posx=item1->x();
+        int item1posy=item1->y();
+
+        int item2width=item2->boundingRect().width();
+        int item2height=item2->boundingRect().height();
+        int item2posx=item2->x();
+        int item2posy=item2->y();
+
+        if(item1height==item2height){
+
+            if(item1posx<item2posx){
+
+                item2->setPos(item2posx,item1posy);
+            }
+
+            if(item1posx>item2posx){
+
+                item1->setPos(item1posx,item2posy);
+            }
+
+        }
+
+
+        if(item1height>item2height){
+
+            if(item1posx<item2posx){
+
+                item2->setPos(item2posx,(item1height-item2height)/2+item1posy);
+            }
+
+            if(item1posx>item2posx){
+
+                item1->setPos(item1posx,item2posy-(item1height-item2height)/2);
+            }
+
+        }
+
+
+        if(item1height<item2height){
+
+            if(item1posx<item2posx){
+
+                item2->setPos(item2posx,item1posy-(item1height-item2height)/2);
+            }
+
+            if(item1posx>item2posx){
+
+                item1->setPos(item1posx,item1posy+(item1height-item2height)/2);
+            }
+
+        }
+
+
+
+}
+}
+
+void MainWindow::on_actionzhoupoint_triggered()
+{
+    qDebug()<<p->list_items.count();
+    p->drawZhouPoint(-10,-10,20);
+}
+
+void MainWindow::on_action_qingkong_triggered()
+{
+    int num=p->list_items.count();
+    if(num>0){
+        QListIterator<QGraphicsItem*> it(p->list_items);
+        while (it.hasNext()) {
+            scene->removeItem(it.next());
+        }
+    }
 }

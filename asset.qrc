@@ -4,5 +4,6 @@
         <file>imgs/b.png</file>
         <file>imgs/g.png</file>
         <file>imgs/t1.png</file>
+        <file>imgs/point.png</file>
     </qresource>
 </RCC>

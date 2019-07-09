@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>cxbs</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -20,21 +23,37 @@
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>信息</string>
+        <string>信息 cm</string>
        </attribute>
        <widget class="QToolBox" name="toolBox">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>150</y>
-          <width>230</width>
+          <y>210</y>
+          <width>380</width>
           <height>221</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="currentIndex">
          <number>2</number>
@@ -44,9 +63,15 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>230</width>
+           <width>380</width>
            <height>143</height>
           </rect>
+         </property>
+         <property name="font">
+          <font>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
          </property>
          <attribute name="label">
           <string>设置</string>
@@ -96,20 +121,20 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>230</width>
+           <width>380</width>
            <height>143</height>
           </rect>
          </property>
          <attribute name="label">
-          <string>柜体</string>
+          <string>柜体/变压器</string>
          </attribute>
          <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>10</y>
-            <width>181</width>
-            <height>131</height>
+            <x>1</x>
+            <y>24</y>
+            <width>188</width>
+            <height>77</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -120,8 +145,8 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEdit">
+           <item row="0" column="1" colspan="2">
+            <widget class="QLineEdit" name="le_gtwidth">
              <property name="placeholderText">
               <string>width</string>
              </property>
@@ -134,8 +159,8 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEdit_2">
+           <item row="1" column="1" colspan="2">
+            <widget class="QLineEdit" name="le_gtdeep">
              <property name="placeholderText">
               <string>deep</string>
              </property>
@@ -148,6 +173,13 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="text">
+              <string>重置</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -156,7 +188,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>230</width>
+           <width>380</width>
            <height>143</height>
           </rect>
          </property>
@@ -166,31 +198,41 @@
          <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
-            <x>1</x>
-            <y>11</y>
-            <width>189</width>
+            <x>5</x>
+            <y>15</y>
+            <width>212</width>
             <height>77</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
-            <widget class="QLabel" name="label_4">
+            <widget class="QLabel" name="lal_lrspace">
+             <property name="styleSheet">
+              <string notr="true">QLabel#lal_rlspace:hover{
+color:red;
+}</string>
+             </property>
              <property name="text">
               <string>左右间距</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
+           <item row="0" column="1" colspan="2">
             <widget class="QLineEdit" name="le_hline"/>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="label_5">
+            <widget class="QLabel" name="lal_tdspace">
+             <property name="styleSheet">
+              <string notr="true">QLabel#lal_tdspace:hover{
+color:red;
+}</string>
+             </property>
              <property name="text">
               <string>上下间距</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item row="1" column="1" colspan="2">
             <widget class="QLineEdit" name="le_vline"/>
            </item>
            <item row="2" column="1">
@@ -200,17 +242,24 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>重置</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
        </widget>
-       <widget class="QTextEdit" name="textEdit">
+       <widget class="QTextEdit" name="te_info">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>221</width>
-          <height>131</height>
+          <width>380</width>
+          <height>180</height>
          </rect>
         </property>
        </widget>
@@ -285,7 +334,11 @@
    <addaction name="separator"/>
    <addaction name="actionfenjie"/>
    <addaction name="separator"/>
-   <addaction name="action_jiegou"/>
+   <addaction name="actionhjuzhong"/>
+   <addaction name="separator"/>
+   <addaction name="actionvjuzhong"/>
+   <addaction name="separator"/>
+   <addaction name="action_qingkong"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -305,6 +358,7 @@
    <addaction name="actionword"/>
    <addaction name="actionbianyaqi"/>
    <addaction name="actionguiti"/>
+   <addaction name="actionzhoupoint"/>
   </widget>
   <action name="actionS11_30">
    <property name="checkable">
@@ -458,15 +512,18 @@
     <string>S11-2500</string>
    </property>
   </action>
-  <action name="action_jiegou">
+  <action name="action_qingkong">
    <property name="text">
-    <string>结构</string>
+    <string>清空</string>
    </property>
    <property name="toolTip">
-    <string>结构</string>
+    <string>清空</string>
    </property>
   </action>
   <action name="actionDrawGrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="asset.qrc">
      <normaloff>:/imgs/imgs/mao.png</normaloff>:/imgs/imgs/mao.png</iconset>
@@ -537,6 +594,9 @@
    </property>
   </action>
   <action name="action750_900">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>750*900</string>
    </property>
@@ -545,6 +605,9 @@
    </property>
   </action>
   <action name="action900_1000">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>900*1000</string>
    </property>
@@ -566,23 +629,64 @@
    </property>
   </action>
   <action name="action600_600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>600*600</string>
    </property>
   </action>
   <action name="action800_600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>800*600</string>
    </property>
   </action>
   <action name="action1000_600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>1000*600</string>
    </property>
   </action>
   <action name="action1200_600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>1200*600</string>
+   </property>
+  </action>
+  <action name="actionhjuzhong">
+   <property name="text">
+    <string>水平居中</string>
+   </property>
+   <property name="toolTip">
+    <string>水平居中</string>
+   </property>
+  </action>
+  <action name="actionvjuzhong">
+   <property name="text">
+    <string>垂直居中</string>
+   </property>
+   <property name="toolTip">
+    <string>垂直居中</string>
+   </property>
+  </action>
+  <action name="actionzhoupoint">
+   <property name="icon">
+    <iconset>
+     <normalon>:/imgs/imgs/point.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>周点</string>
+   </property>
+   <property name="toolTip">
+    <string>周点</string>
    </property>
   </action>
  </widget>
