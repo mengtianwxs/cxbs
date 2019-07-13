@@ -67,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
      connect(cbg,SIGNAL(buttonToggled(QAbstractButton *,bool)),this,SLOT(method_onbuttonToggled(QAbstractButton *,bool)));
 
-     connect(scene,SIGNAL(changed(QList<QRectF>)),SLOT(method_onSceneChange(QList<QRectF>)));
 }
 
 MainWindow::~MainWindow()
@@ -219,82 +218,6 @@ int MainWindow::method_minPoint4(QList<int> pl)
 }
 
 
-void MainWindow::on_action_pin_triggered()
-{
-   str_design="pin";
-   qDebug()<<str_design;
-}
-
-void MainWindow::on_action_mu_triggered()
-{
-  str_design="mu";
-  qDebug()<<str_design;
-}
-
-void MainWindow::on_actionS11_30_triggered()
-{
-
-}
-
-void MainWindow::on_actionS11_50_triggered()
-{
-
-}
-
-void MainWindow::on_actionS11_63_triggered()
-{
-
-}
-
-void MainWindow::on_actionH1_triggered()
-{
-
-}
-
-void MainWindow::on_actionH2_triggered()
-{
-
-}
-
-void MainWindow::on_actionH3_triggered()
-{
-
-}
-
-void MainWindow::on_actionH4_triggered()
-{
-
-}
-
-void MainWindow::on_actionL1_triggered()
-{
-
-}
-
-void MainWindow::on_actionL2_triggered()
-{
-
-}
-
-void MainWindow::on_actionL3_triggered()
-{
-
-}
-
-void MainWindow::on_actionL6_triggered()
-{
-
-}
-
-void MainWindow::on_actionL4_triggered()
-{
-
-}
-
-void MainWindow::on_actionL5_triggered()
-{
-
-}
 
 
 
@@ -1124,7 +1047,25 @@ void MainWindow::on_actionhjuzhong_triggered()
 void MainWindow::on_actionzhoupoint_triggered()
 {
 //    qDebug()<<p->list_items.count();
-    p->drawZhouPoint(-10,-10,20);
+
+
+    //如何ctrl按下则画4个周点
+    if(isCtrlPressed){
+        QGraphicsItem* item1=p->drawZhouPoint(-10,-10,20);
+        QGraphicsItem* item2=p->drawZhouPoint(-10,-10,20);
+        QGraphicsItem* item3=p->drawZhouPoint(-10,-10,20);
+        QGraphicsItem* item4=p->drawZhouPoint(-10,-10,20);
+        item1->moveBy(120,340);
+        item2->moveBy(480,120);
+        item3->moveBy(720,340);
+        item4->moveBy(480,520);
+//        qDebug()<<"draw zp";
+
+
+
+    }else{
+        p->drawZhouPoint(-10,-10,20);
+    }
 }
 
 void MainWindow::on_action_qingkong_triggered()
@@ -1215,6 +1156,11 @@ void MainWindow::on_actionlianxian_triggered()
          np3=QPointF(maxx,maxy);
          np4=QPointF(minx,maxy);
          p->drawPathItem(np1,np2,np3,np4);
+         double w=np2.x()-np1.x();
+         double h=np3.y()-np2.y();
+         double area=(w/100)*(h/100);
+         double price=area*1700;
+         ui->statusBar->showMessage("周边 w,h:("+QString::number(w/100)+","+QString::number(h/100)+") / area "+QString::number(area)+" m2 / price(1700/m2) " +QString::number(price));
 
      }
 
@@ -1245,7 +1191,23 @@ void MainWindow::on_actionlianxian_triggered()
 
 }
 
-void MainWindow::method_onSceneChange(QList<QRectF>)
+
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 
+    if(event->modifiers()==Qt::ControlModifier){
+
+        isCtrlPressed=true;
+         qDebug()<<"press key "<<isCtrlPressed;
+    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if(QApplication::keyboardModifiers()==Qt::ControlModifier){
+
+        isCtrlPressed=false;
+        qDebug()<<"press key relase"<<isCtrlPressed;
+    }
 }

@@ -32,7 +32,7 @@ void mtp::drawGrid()
 
             QGraphicsLineItem* item = new QGraphicsLineItem(seg,seg*n,(b+9)*seg,seg*n);
             item->setPen(pen);
-            item->setOpacity(0.1);
+            item->setOpacity(0.6);
             scene->addItem(item);
             list_gird.append(item);
 
@@ -47,7 +47,7 @@ void mtp::drawGrid()
             QGraphicsLineItem* item = new QGraphicsLineItem(seg*n,seg,seg*n,seg*b);
             scene->addItem(item);
 //            item->setPen(pen);
-            item->setOpacity(0.1);
+            item->setOpacity(0.6);
             list_gird.append(item);
     }
 

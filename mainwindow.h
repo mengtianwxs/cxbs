@@ -43,6 +43,7 @@ private:
     bool isXiFu=false;
     QTimer* timer;
     QPointF np1,np2,np3,np4;
+    bool isCtrlPressed=false;
 
 
 public:
@@ -57,21 +58,7 @@ public:
 
 
 private slots:
-    void on_action_pin_triggered();
-    void on_action_mu_triggered();
-    void on_actionS11_30_triggered();
-    void on_actionS11_50_triggered();
-    void on_actionS11_63_triggered();
-    void on_actionH1_triggered();
-    void on_actionH2_triggered();
-    void on_actionH3_triggered();
-    void on_actionH4_triggered();
-    void on_actionL1_triggered();
-    void on_actionL2_triggered();
-    void on_actionL3_triggered();
-    void on_actionL6_triggered();
-    void on_actionL4_triggered();
-    void on_actionL5_triggered();
+
 
     void on_actionDrawGrid_triggered();
 
@@ -98,7 +85,9 @@ private slots:
     void on_actionzhoupoint_triggered();
     void on_action_qingkong_triggered();
     void on_actionlianxian_triggered();
-    void method_onSceneChange(QList<QRectF>);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+
 };
 
 #endif // MAINWINDOW_H
