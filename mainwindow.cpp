@@ -66,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
      connect(cbg,SIGNAL(buttonToggled(QAbstractButton *,bool)),this,SLOT(method_onbuttonToggled(QAbstractButton *,bool)));
+
+     connect(scene,SIGNAL(changed(QList<QRectF>)),SLOT(method_onSceneChange(QList<QRectF>)));
 }
 
 MainWindow::~MainWindow()
@@ -163,6 +165,56 @@ void MainWindow::method_deleteGrid()
 {
     isDisplayGrid=true;
     p->deleteGrid();
+
+}
+
+bool MainWindow::method_panduanPoint4isOk(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
+{
+
+    //method1
+//    if(p1.x()>p4.x() and p1.x()<p2.x() and p3.x()>p4.x() and p3.x()<p2.x() and p4.y()>p1.y() and p4.y()<p3.y() and p2.y()> p1.y() and p2.y()< p3.y()){
+
+//        return true;
+//    }
+    //method2
+
+
+
+    return false;
+}
+
+int MainWindow::method_maxPoint4(QList<int> pl)
+{
+    int max=pl.at(0);
+    int num=pl.count();
+    if(num>0){
+
+        for(int i=0;i<num;i++){
+            if(pl.at(i)>max){
+                max=pl.at(i);
+            }
+        }
+        return max;
+    }
+
+
+
+}
+
+int MainWindow::method_minPoint4(QList<int> pl)
+{
+
+    int max=pl.at(0);
+    int num=pl.count();
+    if(num>0){
+
+        for(int i=0;i<num;i++){
+            if(pl.at(i)<max){
+                max=pl.at(i);
+            }
+        }
+        return max;
+    }
 
 }
 
@@ -514,6 +566,10 @@ void MainWindow::on_actionfenjie_triggered()
 
 void MainWindow::on_pb_setjianju_clicked()
 {
+    QRegExp re("=?-?[0-9]{1,4}");
+    QValidator* val=new QRegExpValidator(re,ui->page_3);
+    ui->le_hline->setValidator(val);
+    ui->le_vline->setValidator(val);
 
    int num=scene->selectedItems().count();
 //    qDebug()<<"click"<<num;
@@ -525,9 +581,8 @@ void MainWindow::on_pb_setjianju_clicked()
         //判断是否为周点
         bool isZP1=item1->data(0)=="zp"?true:false;
         bool isZP2=item2->data(0)=="zp"?true:false;
-        //如果有一个是周点则不进行常规计算
-        bool isZP=isZP1 and isZP2;
-        qDebug()<<"zp"<<isZP1<<isZP2<<"1 2"<< isZP;
+        //判断是否有且有一个周点
+       bool isZP=(isZP1==true and isZP2==false) or (isZP1==false and isZP2==true);
         QGraphicsItem* itemzp=NULL;
         QGraphicsItem* itemgt=NULL;
         int zpx,zpy,gtx,gty,zpw,zph,gtw,gth=0;
@@ -559,6 +614,100 @@ void MainWindow::on_pb_setjianju_clicked()
         }
 
 
+
+        //有一个周点的情况 上下调整
+        if(re.exactMatch(ui->le_vline->text()) and isZP ){
+            qDebug()<<"this is zdian mode";
+
+            int vspace=ui->le_vline->text().toInt();
+
+            if(vspace<0){
+                //@1 如果设置成0则让右边的往左靠，下边的往上靠
+                //               如果为正值下往上靠
+                //            周点在图元的上方
+                if(zpy<gty){
+                    ui->statusBar->showMessage("周点在图元的上方");
+                    itemzp->setY(gty-qFabs(vspace));
+                }
+                //            周点在图元的下方
+                if(zpy>gty){
+                    ui->statusBar->showMessage("周点在图元的下方");
+
+                    itemgt->setY(zpy-gth-qFabs(vspace));
+                }
+            }
+
+
+            if(vspace>=0){
+                //            周点在图元的上方
+                if(zpy<gty){
+                    //
+                    itemgt->setY(zpy+qFabs(vspace));
+                }
+
+                //            周点在图元的下方
+                if(zpy>gty){
+                    itemzp->setY(gty+gth+qFabs(vspace));
+                }
+
+            }
+
+        }
+
+
+//有一个周点情况水平调整
+
+        if(re.exactMatch(ui->le_hline->text()) and isZP ){
+            qDebug()<<"this is zdian mode h";
+
+            int hspace=ui->le_hline->text().toInt();
+
+            if(hspace<0){
+         //周点在图元的左方
+                if(zpx<gtx){
+                    ui->statusBar->showMessage("周点在图元的左方");
+                    itemzp->setX(gtx-qFabs(hspace));
+                }
+                //            周点在图元的下方
+                if(zpx>gtx){
+                    ui->statusBar->showMessage("周点在图元的右方");
+
+                    itemgt->setX(zpx-gtw-qFabs(hspace));
+                }
+            }
+
+
+            if(hspace>=0){
+                //
+                if(zpx<gtx){
+                    //
+                    itemgt->setX(zpx+qFabs(hspace));
+                }
+
+                //
+                if(zpx>gtx){
+                    itemzp->setX(gtx+gtw+qFabs(hspace));
+                }
+
+            }
+
+        }
+
+
+
+
+//##############################################################################################
+
+
+
+
+
+
+
+        //单独的两个图元存放处没有周点的情况
+        if(item1->data(0)!="zp" and item2->data(0)!="zp"){
+
+
 //        qDebug()<<item1->x()<<item1->y()<<"item1"<<item2->x()<<item2->y()<<"item2";
         int item1width=item1->boundingRect().width();
         int item1height=item1->boundingRect().height();
@@ -570,15 +719,7 @@ void MainWindow::on_pb_setjianju_clicked()
         int item2posx=item2->x();
         int item2posy=item2->y();
 
-
-
-
-        QRegExp re("=?-?[0-9]{1,4}");
-        QValidator* val=new QRegExpValidator(re,ui->page_3);
-        ui->le_hline->setValidator(val);
-        ui->le_vline->setValidator(val);
-//没有周点的情况
-        if(re.exactMatch(ui->le_vline->text()) and isZP ){
+        if(re.exactMatch(ui->le_vline->text())){
             qDebug()<<"this is vline mode";
 
             int vspace=ui->le_vline->text().toInt();
@@ -612,79 +753,53 @@ void MainWindow::on_pb_setjianju_clicked()
 
         }
 
-//有一个周点的情况 上下调整
-        if(re.exactMatch(ui->le_vline->text()) and isZP==false ){
-            qDebug()<<"this is zdian mode";
 
-            int vspace=ui->le_vline->text().toInt();
 
-            if(vspace<0){
-                //@1 如果设置成0则让右边的往左靠，下边的往上靠
-//               如果为正值下往上靠
-//            周点在图元的上方
-                if(zpy<gty){
- qDebug()<<"周点在图元的上方";
-                    itemzp->setY(gty-qFabs(vspace));
+        if(re.exactMatch(ui->le_hline->text())){
+            qDebug()<<"this is hvlinemode ";
+            int hspace=ui->le_hline->text().toInt();
+            //cm
+            if(hspace>=0){
+                if(item1posx<item2posx){
+                    item2->setX(item1posx+hspace+item1width);
                 }
-//            周点在图元的下方
-                if(zpy>gty){
- qDebug()<<"周点在图元的下方";
-                    itemgt->setY(zpy-gth-qFabs(vspace));
+
+                if(item1posx>item2posx){
+                    item1->setX(item2posx+hspace+item2width);
+
                 }
+
+
             }
-//##############################################################################################
-//            if(vspace>=0){
-//                if(item1posy<item2posy){
 
-//                    item2->setY(item1posy+item1height+vspace);
-//                }
+            if(hspace<0){
+                if(item1posx<item2posx){
+                    item1->setX(item2posx-item1width-qFabs(hspace));
+                }
 
-//                if(item1posy>item2posy){
+                if(item1posx>item2posx){
+                    item2->setX(item1posx-item2width-qFabs(hspace));
 
-//                    item1->setY(item2posy+item2height+vspace);
-//                }
+                }
 
-//            }
+
+            }
+        }
+
+   }
 
         }
 
-        if(re.exactMatch(ui->le_hline->text()) and isZP){
-            qDebug()<<"this is hvlinemode ";
-     int hspace=ui->le_hline->text().toInt();
-     //cm
-     if(hspace>=0){
-         if(item1posx<item2posx){
-             item2->setX(item1posx+hspace+item1width);
-         }
-
-         if(item1posx>item2posx){
-             item1->setX(item2posx+hspace+item2width);
-
-         }
-
-
-     }
-
-     if(hspace<0){
-         if(item1posx<item2posx){
-             item1->setX(item2posx-item1width-qFabs(hspace));
-         }
-
-         if(item1posx>item2posx){
-             item2->setX(item1posx-item2width-qFabs(hspace));
-
-         }
-
-
-     }
-}
 
 
 
 
 
 
-   }
+
+
+
+
 }
 
 void MainWindow::method_onTimerOut()
@@ -743,6 +858,11 @@ void MainWindow::method_onTimerOut()
         }
         if(item1->data(0)=="zp"){
             itemtype="周点";
+        }
+
+        if(item1->data(0)=="zb"){
+
+            itemtype="周边";
         }
 
         ui->te_info->append(itemtype+" ( x "+QString::number(item1posx)+",y "+QString::number(item1posy)+"),( w "+QString::number(item1width)+",h "+QString::number(item1height)+")\n");
@@ -1003,7 +1123,7 @@ void MainWindow::on_actionhjuzhong_triggered()
 
 void MainWindow::on_actionzhoupoint_triggered()
 {
-    qDebug()<<p->list_items.count();
+//    qDebug()<<p->list_items.count();
     p->drawZhouPoint(-10,-10,20);
 }
 
@@ -1016,4 +1136,116 @@ void MainWindow::on_action_qingkong_triggered()
             scene->removeItem(it.next());
         }
     }
+}
+
+void MainWindow::on_actionlianxian_triggered()
+{
+
+    //用框选来选择出周点对象
+     int num=scene->selectedItems().count();
+     qDebug()<<"num"<<num;
+     if(num>4){
+         QList<QPointF> listzp;
+         QList<QGraphicsItem*> list_item;
+          QPointF p1,p2,p3,p4;
+
+         for(int i=0;i<num;i++){
+             QGraphicsItem* item=scene->selectedItems().at(i);
+             list_item.append(item);
+
+         }
+          qDebug()<<list_item;
+
+//         QListIterator<QGraphicsItem*> it(list_item);
+//         while (it.hasNext()) {
+//             if(it.next()->data(0)=="zp"){
+//                 listzp.append(it.next()->pos());
+//             }
+//         }
+          int itemnum=list_item.count();
+          for(int n=0;n<itemnum;n++){
+              if(list_item.at(n)->data(0)=="zp"){
+
+                  listzp.append(list_item.at(n)->pos());
+              }
+          }
+
+          if(listzp.count()==4){
+
+              p1=listzp.at(0);
+              p2=listzp.at(1);
+              p3=listzp.at(2);
+              p4=listzp.at(3);
+
+          }
+
+         qDebug()<<listzp;
+
+
+
+         int x1,x2,x3,x4,y1,y2,y3,y4;
+         x1=p1.x();
+         x2=p2.x();
+         x3=p3.x();
+         x4=p4.x();
+         y1=p1.y();
+         y2=p2.y();
+         y3=p3.y();
+         y4=p4.y();
+         QList<int> listx;
+         QList<int> listy;
+         listx.append(x1);
+         listx.append(x2);
+         listx.append(x3);
+         listx.append(x4);
+         listy.append(y1);
+         listy.append(y2);
+         listy.append(y3);
+         listy.append(y4);
+
+
+         int maxx=method_maxPoint4(listx);
+         int minx=method_minPoint4(listx);
+         int maxy=method_maxPoint4(listy);
+         int miny=method_minPoint4(listy);
+         qDebug()<<"maxx minx"<<maxx<<minx<<"maxy miny"<<maxy<<miny;
+
+         np1=QPointF(minx,miny);
+         np2=QPointF(maxx,miny);
+         np3=QPointF(maxx,maxy);
+         np4=QPointF(minx,maxy);
+         p->drawPathItem(np1,np2,np3,np4);
+
+     }
+
+
+
+
+
+//         判断4点符合规则
+
+ /*
+         p1
+    |||||||||||||
+    |           |
+ p4 |           |  p2
+    |           |
+    |||||||||||||
+
+         p3
+   */
+
+   //有p2,p4两个点的y坐标在p1,p2两个点的y坐标范围内
+   //有p1,p3两个点的x坐标在p2,p4两个点的x坐标范围内
+
+
+
+
+
+
+}
+
+void MainWindow::method_onSceneChange(QList<QRectF>)
+{
+
 }

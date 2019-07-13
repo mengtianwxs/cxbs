@@ -178,8 +178,31 @@ QGraphicsItem *mtp::drawZhouPoint(int sx, int sy, int r)
     c->setBrush(brush);
     c->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
     c->setData(0,"zp");
+    list_zp.append(c);
     list_items.append(c);
     return c;
+
+}
+
+QGraphicsItem *mtp::drawPathItem(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
+{
+    QPainterPath path;
+    QGraphicsPathItem* item =new QGraphicsPathItem();
+    path.moveTo(p1);
+    path.lineTo(p2);
+    path.lineTo(p3);
+    path.lineTo(p4);
+    path.closeSubpath();
+    item->setPath(path);
+    item->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsFocusable);
+    list_items.append(item);
+    QPen p;
+    p.setWidth(4);
+    p.setColor(Qt::red);
+    item->setPen(p);
+    item->setData(0,"zb");
+    scene->addItem(item);
+    return item;
 
 }
 

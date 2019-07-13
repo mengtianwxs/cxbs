@@ -55,6 +55,9 @@
           <bold>false</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="currentIndex">
          <number>2</number>
         </property>
@@ -192,10 +195,13 @@
            <height>143</height>
           </rect>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <attribute name="label">
           <string>间距</string>
          </attribute>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -206,9 +212,12 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
-            <widget class="QLabel" name="lal_lrspace">
+            <widget class="QLabel" name="lal1">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;@1 移动左边的物体，请设置为负值。&lt;/p&gt;&lt;p&gt;@2 移动右边的物体，请设置为正值。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
-              <string notr="true">QLabel#lal_rlspace:hover{
+              <string notr="true">QLabel#lal1{
 color:red;
 }</string>
              </property>
@@ -221,9 +230,12 @@ color:red;
             <widget class="QLineEdit" name="le_hline"/>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="lal_tdspace">
+            <widget class="QLabel" name="lal2">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;@1 移动上面的物体，请设置为负值。&lt;/p&gt;&lt;p&gt;@2 移动下面的物体，请设置为正值。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
-              <string notr="true">QLabel#lal_tdspace:hover{
+              <string notr="true">QLabel#lal2{
 color:red;
 }</string>
              </property>
@@ -233,7 +245,11 @@ color:red;
             </widget>
            </item>
            <item row="1" column="1" colspan="2">
-            <widget class="QLineEdit" name="le_vline"/>
+            <widget class="QLineEdit" name="le_vline">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
            </item>
            <item row="2" column="1">
             <widget class="QPushButton" name="pb_setjianju">
@@ -359,6 +375,7 @@ color:red;
    <addaction name="actionbianyaqi"/>
    <addaction name="actionguiti"/>
    <addaction name="actionzhoupoint"/>
+   <addaction name="actionlianxian"/>
   </widget>
   <action name="actionS11_30">
    <property name="checkable">
@@ -687,6 +704,19 @@ color:red;
    </property>
    <property name="toolTip">
     <string>周点</string>
+   </property>
+  </action>
+  <action name="actionlianxian">
+   <property name="icon">
+    <iconset resource="asset.qrc">
+     <normaloff>:/imgs/imgs/lianxian.png</normaloff>
+     <normalon>imgs/lianxian.png</normalon>:/imgs/imgs/lianxian.png</iconset>
+   </property>
+   <property name="text">
+    <string>连线</string>
+   </property>
+   <property name="toolTip">
+    <string>连线</string>
    </property>
   </action>
  </widget>

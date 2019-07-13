@@ -42,12 +42,16 @@ private:
     bool isDisplayGrid=true;
     bool isXiFu=false;
     QTimer* timer;
+    QPointF np1,np2,np3,np4;
 
 
 public:
     void method_initData();
     void method_displayGrid();
     void method_deleteGrid();
+    bool method_panduanPoint4isOk(QPointF,QPointF,QPointF,QPointF);
+    int method_maxPoint4(QList<int> pl);
+    int method_minPoint4(QList<int> pl);
 
 
 
@@ -93,6 +97,8 @@ private slots:
     void on_actionhjuzhong_triggered();
     void on_actionzhoupoint_triggered();
     void on_action_qingkong_triggered();
+    void on_actionlianxian_triggered();
+    void method_onSceneChange(QList<QRectF>);
 };
 
 #endif // MAINWINDOW_H
